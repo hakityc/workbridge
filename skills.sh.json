@@ -2,9 +2,10 @@
   "$schema": "https://skills.sh/schemas/skills.sh.schema.json",
   "groupings": [
     {
-      "title": "Flow for TAPD",
-      "description": "Team delivery workflow from product Git specifications through TAPD review, development, quality, and wrap-up.",
+      "title": "WorkBridge",
+      "description": "TAPD and Discourse business workflows with secure onboarding.",
       "skills": [
+        "workbridge",
         "tapd"
       ]
     }

@@ -53,7 +53,7 @@ input.on("line", (line) => {
     send({
       jsonrpc: "2.0",
       id: message.id,
-      result: { content: [{ type: "text", text: "fixture project" }] },
+      result: { content: [{ type: "text", text: process.env.FAKE_MCP_BUSINESS_ERROR === "1" ? JSON.stringify({status:0,info:"authentication failed"}) : "fixture project" }] },
     });
   }
 });

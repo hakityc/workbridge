@@ -1,0 +1,203 @@
+{
+  "version": 1,
+  "id": "tapd",
+  "node": 22,
+  "command": "uvx",
+  "args": [
+    "mcp-server-tapd==8.0.78"
+  ],
+  "probe": {
+    "tool": "get_user_participant_projects",
+    "args": {}
+  },
+  "capabilities": {
+    "workitem.requirement.read": {
+      "version": 1,
+      "tools": [
+        "get_stories_or_tasks"
+      ],
+      "write": false,
+      "defaults": {
+        "entity_type": "stories"
+      },
+      "fields": {
+        "title": "name",
+        "space": "workspace_id"
+      }
+    },
+    "workitem.requirement.create": {
+      "version": 1,
+      "tools": [
+        "create_story_or_task"
+      ],
+      "write": true,
+      "readback": "workitem.requirement.read",
+      "defaults": {
+        "entity_type": "stories"
+      },
+      "fields": {
+        "title": "name",
+        "space": "workspace_id"
+      }
+    },
+    "workitem.requirement.update": {
+      "version": 1,
+      "tools": [
+        "update_story_or_task"
+      ],
+      "write": true,
+      "readback": "workitem.requirement.read",
+      "defaults": {
+        "entity_type": "stories"
+      },
+      "fields": {
+        "title": "name",
+        "space": "workspace_id"
+      }
+    },
+    "workitem.task.read": {
+      "version": 1,
+      "tools": [
+        "get_stories_or_tasks"
+      ],
+      "write": false,
+      "defaults": {
+        "entity_type": "tasks"
+      },
+      "fields": {
+        "title": "name",
+        "space": "workspace_id"
+      }
+    },
+    "workitem.task.create": {
+      "version": 1,
+      "tools": [
+        "create_story_or_task"
+      ],
+      "write": true,
+      "readback": "workitem.task.read",
+      "defaults": {
+        "entity_type": "tasks"
+      },
+      "fields": {
+        "title": "name",
+        "space": "workspace_id"
+      }
+    },
+    "workitem.task.update": {
+      "version": 1,
+      "tools": [
+        "update_story_or_task"
+      ],
+      "write": true,
+      "readback": "workitem.task.read",
+      "defaults": {
+        "entity_type": "tasks"
+      },
+      "fields": {
+        "title": "name",
+        "space": "workspace_id"
+      }
+    },
+    "workitem.task.schedule": {
+      "version": 1,
+      "tools": [
+        "update_story_or_task"
+      ],
+      "write": true,
+      "readback": "workitem.task.read",
+      "defaults": {
+        "entity_type": "tasks"
+      }
+    },
+    "workitem.defect.read": {
+      "version": 1,
+      "tools": [
+        "get_bug"
+      ],
+      "write": false
+    },
+    "workitem.defect.create": {
+      "version": 1,
+      "tools": [
+        "create_bug"
+      ],
+      "write": true,
+      "readback": "workitem.defect.read"
+    },
+    "workitem.defect.update": {
+      "version": 1,
+      "tools": [
+        "update_bug"
+      ],
+      "write": true,
+      "readback": "workitem.defect.read"
+    },
+    "workitem.comment.read": {
+      "version": 1,
+      "tools": [
+        "get_comments"
+      ],
+      "write": false
+    },
+    "workitem.comment.create": {
+      "version": 1,
+      "tools": [
+        "create_comments"
+      ],
+      "write": true,
+      "readback": "workitem.comment.read"
+    },
+    "workitem.testcase.read": {
+      "version": 1,
+      "tools": [
+        "get_tcases"
+      ],
+      "write": false
+    },
+    "workitem.testcase.create": {
+      "version": 1,
+      "tools": [
+        "create_or_update_tcases"
+      ],
+      "write": true,
+      "readback": "workitem.testcase.read"
+    },
+    "workitem.testcase.link": {
+      "version": 1,
+      "tools": [
+        "entity_relations"
+      ],
+      "write": true
+    },
+    "workitem.iteration.read": {
+      "version": 1,
+      "tools": [
+        "get_iterations"
+      ],
+      "write": false
+    },
+    "workitem.timesheet.read": {
+      "version": 1,
+      "tools": [
+        "get_timesheets"
+      ],
+      "write": false
+    },
+    "workitem.timesheet.create": {
+      "version": 1,
+      "tools": [
+        "add_timesheets"
+      ],
+      "write": true,
+      "readback": "workitem.timesheet.read"
+    },
+    "workitem.member.read": {
+      "version": 1,
+      "tools": [
+        "get_workspace_users"
+      ],
+      "write": false
+    }
+  }
+}

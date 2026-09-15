@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-PROBE = ROOT / "tapd" / "scripts" / "mcp_probe.mjs"
+PROBE = ROOT / "workbridge" / "scripts" / "mcp_probe.mjs"
 FAKE_SERVER = ROOT / "tests" / "fixtures" / "fake_mcp_server.mjs"
 
 
@@ -66,7 +66,7 @@ class McpProbeTests(unittest.TestCase):
         )
         self.assertNotEqual(failed.returncode, 0)
         self.assertNotIn(secret, failed.stdout)
-        self.assertIn("***", failed.stdout)
+        self.assertIn("PROBE_FAILED", failed.stdout)
 
         timed_out = run_probe(
             ["--", "node", str(FAKE_SERVER)],

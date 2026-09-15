@@ -3,7 +3,7 @@ import unittest
 from pathlib import Path
 
 
-SCRIPT = Path(__file__).parents[1] / "tapd" / "scripts" / "safety_utils.py"
+SCRIPT = Path(__file__).parents[1] / "workbridge" / "scripts" / "safety_utils.py"
 SPEC = importlib.util.spec_from_file_location("safety_utils", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader

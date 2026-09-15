@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "fresh-no-mcp",
+      "request": "直接创建需求：导出账单支持按月选择",
+      "environment": "no MCP, outside Git",
+      "expect": [
+        "retain draft",
+        "secure local connect command",
+        "no Git/Manifest prerequisite",
+        "host read probe before write"
+      ]
+    },
+    {
+      "id": "draft-only",
+      "request": "把 WiseFlow 讨论整理成需求草案，不要发布",
+      "environment": "Discourse reads available, TAPD absent",
+      "expect": [
+        "read source",
+        "no TAPD onboarding",
+        "no writes"
+      ]
+    },
+    {
+      "id": "partial-unknown",
+      "request": "继续上次操作",
+      "environment": "requirement verified, reply unknown",
+      "expect": [
+        "no duplicate requirement",
+        "read reply/topic pages",
+        "unknown until evidence"
+      ]
+    },
+    {
+      "id": "cancel-auth",
+      "request": "首次连接时取消",
+      "environment": "terminal cancel",
+      "expect": [
+        "no host config",
+        "no credential",
+        "original draft retained"
+      ]
+    },
+    {
+      "id": "readonly-forum",
+      "request": "把进展回复到论坛",
+      "environment": "read tools only",
+      "expect": [
+        "prepare draft",
+        "explain write opt-in",
+        "no simulated write success"
+      ]
+    },
+    {
+      "id": "remote-switch",
+      "request": "连接切换远程后继续",
+      "environment": "same resources, new endpoint",
+      "expect": [
+        "same ResourceRef",
+        "recheck host auth and tools",
+        "no automatic account fallback"
+      ]
+    }
+  ]
+}

@@ -1,3 +1,7 @@
+# WorkBridge 团队使用入口
+
+新版使用 [仓库首页](../README.md)、[首次连接流程](../workbridge/references/core/onboarding.md) 和 [验收表](workbridge-validation.md)。以下保留历史 TAPD 团队规则供迁移核对，不用其中旧安装命令重新配置凭据。
+
 # TAPD Skill 团队使用手册
 
 > 内部试用版。推荐使用 `/tapd` 作为入口；也可以直接用自然语言说明目标。不同 Agent 对 `/TAPD` 的大小写兼容不完全一致，因此请优先使用小写 `/tapd`。

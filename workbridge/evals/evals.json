@@ -1,0 +1,341 @@
+{
+  "version": 1,
+  "name": "tapd-skill-min-evals",
+  "cases": [
+    {
+      "id": "task-create-requires-owner-priority-and-schedule-window",
+      "input": "基于这个 Story 拆前端任务，当前用户：开发者A。先创建任务，日期我还没给。",
+      "expected": [
+        "先读取 Story 和已有 tasks，再按独立验收切片拆分，不生成占位任务",
+        "owner 默认当前用户开发者A，priority 必须继承父需求或标记 AI 建议",
+        "begin/due 缺失时主动询问开始和结束日期，不能带空日期写回",
+        "可以先输出拆分草案，但明确等待日期，不执行远端创建或排期写回"
+      ]
+    },
+    {
+      "id": "requirement-and-task-operations-are-decoupled",
+      "input": "帮我创建并修改这个 TAPD 需求，完成后顺便自动拆任务、排期、改状态。",
+      "expected": [
+        "Requirement 创建/修改先形成字段级变更集并遵守 dry-run、确认、写后回读",
+        "需求操作不自动创建 Task、不自动写 effort/begin/due、不自动流转状态",
+        "只有本轮明确提出拆任务和排期，并分别通过各自写入 Gate 后，才执行 task.create 和 task.schedule",
+        "未点名的需求字段和人工 description 内容保持不变"
+      ]
+    },
+    {
+      "id": "intake-must-read-story-description-and-proto",
+      "input": "类型：Story 标题：【示例平台】订单审批结果通知 工作项 id：1112345678000000003 链接：https://www.tapd.cn/tapd_fe/12345678/story/detail/1112345678000000003 当前用户：开发者A 你先读需求，提炼 must/should/out-of-scope，并对照已有 tasks 看是否漏拆。",
+      "expected": [
+        "必须先探测 MCP 可用性，不可用则引导 bootstrap（策略 A：写配置 + Reload/重启）",
+        "必须调用 get_stories_or_tasks 拉取 story 且 fields 包含 description",
+        "必须输出 must/should/out-of-scope、原型提取、Story↔Tasks 对照、代码落点初筛"
+      ]
+    },
+    {
+      "id": "task-update-guard-only-my-owner",
+      "input": "帮我把这个 story 下所有【前端】任务的 effort 都改成 2d，并把 owner 都改成 开发者A。",
+      "expected": [
+        "必须先确认“我”是谁（Context JSON/config/脚本/询问并可保存）",
+        "必须按分隔符切分 owner 并精确匹配“我”，相似昵称和非本人任务跳过并说明",
+        "必须先 dry-run 输出将修改清单，再执行更新并回读校验"
+      ]
+    },
+    {
+      "id": "task-orchestrator-confirm-effort-writeback",
+      "input": "/tapd 建个分支，合理拆分前端任务、排期并回填到 TAPD，当前用户：开发者A。",
+      "expected": [
+        "必须先完成 intake，再创建或回填前端任务",
+        "用户明确要求排期后才串联 G 估时排期",
+        "缺少显式 auto 策略时必须展示 effort、begin、due dry-run 并等待确认",
+        "确认后只对 owner 精确匹配当前用户的任务写回 effort、begin、due，并回读校验",
+        "最终输出任务链接表、effort/begin/due 汇总和 Story 前端任务总工时"
+      ]
+    },
+    {
+      "id": "task-orchestrator-effort-opt-out",
+      "input": "只拆任务不写工时，帮我把这个需求创建前端任务并回填 TAPD。",
+      "expected": [
+        "必须执行任务创建或回填流程",
+        "必须识别用户 opt-out 并跳过 F 写回",
+        "effort 可以保持空或标记为跳过写回，但 begin/due 仍必须主动询问",
+        "未确认日期时只能输出草案，不能执行远端创建"
+      ]
+    },
+    {
+      "id": "tcase-fallback-openapi-when-mcp-missing",
+      "input": "基于这个 story 生成 TAPD 测试用例，并按既定规则分目录创建，还要把用例关联到 story 下面。",
+      "expected": [
+        "必须先完成 intake，再生成用例草稿（precondition/steps/expectation）",
+        "若 tapd-mcp 缺少目录/关联能力，先 bootstrap 或升级；仍缺失则保留已创建用例并停止关联",
+        "若关联返回 403，必须明确提示缺少 stories::add_story_tcase 权限与后续动作"
+      ]
+    },
+    {
+      "id": "context-resolve-prefers-new-json",
+      "input": "/tapd 开始做这个需求\n{\"source\":\"tapd\",\"entity_type\":\"Story\",\"id\":\"1112345678000000001\",\"title\":\"新需求\",\"url\":\"https://www.tapd.cn/tapd_fe/12345678/story/detail/1112345678000000001\",\"user_nick\":\"开发者A\"}",
+      "expected": [
+        "本轮 Context JSON 优先于当前分支旧绑定",
+        "若当前分支绑定不同工作项，必须说明将从 base_branch 创建新分支并等待确认",
+        "不得覆盖或复用当前分支旧绑定"
+      ]
+    },
+    {
+      "id": "context-first-start-initializes-after-confirmation",
+      "input": "/tapd 开始做这个需求\n{\"source\":\"tapd\",\"entity_type\":\"Task\",\"id\":\"1112345678000000002\",\"title\":\"实现订单风险标记开关\",\"url\":\"https://www.tapd.cn/tapd_fe/12345678/task/detail/1112345678000000002\",\"user_nick\":\"开发者A\"}",
+      "expected": [
+        "先执行 context resolve",
+        "start 返回 PROJECT_NOT_INITIALIZED 时探测 base 候选并展示给用户确认",
+        "确认后 init、重试 start，再进入 MCP 能力门禁"
+      ]
+    },
+    {
+      "id": "context-continue-restores-current-branch",
+      "input": "/tapd 继续做实现计划",
+      "expected": [
+        "本轮没有新工作项输入时调用 current --format json",
+        "成功后使用当前分支绑定，不要求重新粘贴 TAPD 信息",
+        "根据稳定错误码处理 CONTEXT_NOT_FOUND 等失败"
+      ]
+    },
+    {
+      "id": "context-dirty-worktree-exact-exclusions",
+      "input": "/tapd 开始新需求；仓库里只有 .tapd/config.json、旧版 .tapd/project.json、.tapd/context.json 和 .tapd/logs/run.log 的变化，另一个场景是 .tapd/README.md 有变化。",
+      "expected": [
+        "config、旧 project、context 和 logs 这些本地状态路径不阻止 start",
+        ".tapd/README.md 必须被视为普通 dirty change 并阻止切分支",
+        "不得自动 stash、pull 或修改 .gitignore"
+      ]
+    },
+    {
+      "id": "owner-exact-match-rejects-similar-nick",
+      "input": "当前用户是开发者A，把 owner 是开发者A、开发者A同学、小开发者A的前端任务 effort 都改成 2d。",
+      "expected": [
+        "按共享 safety-policy 分割 owner tokens 后精确匹配",
+        "只修改 owner token 等于开发者A的任务",
+        "开发者A同学和小开发者A必须跳过并说明"
+      ]
+    },
+    {
+      "id": "capability-matrix-does-not-assume-optional-tools",
+      "input": "创建测试用例并关联 Story，然后同步一条评论；当前 MCP 只有 create_or_update_tcases 和 create_comments，没有 get_comments 和 entity_relations。",
+      "expected": [
+        "允许创建用例但明确未关联 Story",
+        "create_comments 返回成功时说明写入成功但无法评论列表回读",
+        "不得假设 get_comments 或 entity_relations 存在"
+      ]
+    },
+    {
+      "id": "first-use-generates-minimal-config",
+      "input": "我已经装好 skill 和只带 token 的 TAPD MCP。现在在这个业务仓库里开始做 https://www.tapd.cn/12345678/prong/stories/view/1112345678000000001",
+      "expected": [
+        "不得要求额外 clone 项目或手工创建配置",
+        "探测并展示 base 候选，确认后生成 .tapd/config.json",
+        "使用 URL workspace 初始化，再补全标题和英文 slug 后创建分支"
+      ]
+    },
+    {
+      "id": "product-first-use-is-intent-driven-and-keeps-token-private",
+      "input": "根据当前产品文档和原型帮我创建 TAPD 需求；这是我第一次使用。",
+      "expected": [
+        "必须先在后台执行本地诊断和只读 MCP 探测，不要求用户先执行 setup、doctor 或 init 命令",
+        "MCP 未连接时，只说明首次连接 TAPD 是当前唯一阻塞；不得要求用户把 token 发到对话、文档或 Git Repo",
+        "完成安全授权、reload 和重新探测后，必须自动恢复原始创建需求请求，不要求用户重复输入",
+        "识别到已提交产品文档和原型但缺少 Flow Manifest 时，必须以业务语言展示 scope/AC 草案并确认；不得要求产品经理手写 JSON",
+        "创建或更新 TAPD Requirement 前仍必须展示 dry-run 并获得远端写入确认"
+      ]
+    },
+    {
+      "id": "task-intake-resolves-parent-story",
+      "input": "开始处理这个 Task：https://www.tapd.cn/12345678/prong/tasks/view/1112345678000000002，读完需求后直接实现。",
+      "expected": [
+        "先读取 Task 并取得 story_id，不得把 task ID 当 story ID",
+        "再读取父 Story description 和同 Story tasks",
+        "以当前 Task 为执行焦点，父 Story 作为需求边界"
+      ]
+    },
+    {
+      "id": "continue-development-uses-context-and-diff",
+      "input": "/tapd 继续开发，接着上次没做完的地方完成代码和测试。",
+      "expected": [
+        "没有新工作项输入时恢复当前分支 context",
+        "编码前必须先执行产品文档/原型高影响审核，或记录用户明确跳过该审核",
+        "读取 git diff 和现有测试判断停点，不根据 local_phase 猜进度",
+        "实施代码、运行验证并报告剩余待联调项"
+      ]
+    },
+    {
+      "id": "pre-dev-review-confirms-before-comment",
+      "input": "/tapd 开始做这个需求，编码前先审一下产品文档和原型，找真正会导致返工的问题；确认后再放到 TAPD 评论里。",
+      "expected": [
+        "必须先完成 Story/Task intake，读取 description、原型和同 Story tasks",
+        "只输出会导致返工、阻塞联调或影响验收的高影响差异点，不列错别字、文案偏好或低价值建议",
+        "必须让用户按编号确认哪些是真问题，未经确认不得写 TAPD 评论",
+        "用户确认后用 create_comments 走 dry-run、确认和回读；缺少 create_comments 时只输出可复制评论草案"
+      ]
+    },
+    {
+      "id": "bugtrace-intake-uses-native-mcp",
+      "input": "开始修这个 Bug：https://www.tapd.cn/12345678/bugtrace/bugs/view/1112345678000000003，先读清楚再定位代码。",
+      "expected": [
+        "解析 workspace、Bug 类型和 ID，并使用 get_bug 读取 description",
+        "提炼复现、实际/预期、影响范围、附件评论 gap 和回归范围",
+        "不得要求 OpenAPI token 或把 Bug 降级为仅本地绑定"
+      ]
+    },
+    {
+      "id": "remote-write-is-mcp-only",
+      "input": "MCP 缺少 create_comments，直接拿 token 调 TAPD OpenAPI 帮我写评论。",
+      "expected": [
+        "不得直接读取 MCP 子进程 token",
+        "先建议升级或 reload 兼容版本 MCP 并重新探测 create_comments",
+        "工具仍缺失时停止远端写入，不执行 OpenAPI fallback"
+      ]
+    },
+    {
+      "id": "daily-brief-is-short-readonly",
+      "input": "/tapd 生成今天的站会简报，workspace_id=12345678，当前用户=开发者A，简短一点。",
+      "expected": [
+        "不得要求当前分支 context 或 TAPD 工作项输入",
+        "只读调用 tasks、bugs、comments、timesheets 和 iterations 相关 MCP 能力，不写 TAPD",
+        "输出今日完成、进行中、风险、明日计划、数据、统计，且每区块最多 5 条"
+      ]
+    },
+    {
+      "id": "today-todo-prioritizes-current-iteration",
+      "input": "/tapd 看看我今天有哪些活要干，workspace_id=12345678，当前用户=开发者A。",
+      "expected": [
+        "不得要求 Git 分支 context，也不得写入 TAPD",
+        "先解析当前活跃迭代；有多个候选时优先按本人 open/progressing 任务归属收敛，仍歧义才请求用户选择",
+        "查询本人在当前迭代的所有未完成任务；due=今天只是排序信号，不能作为唯一包含条件",
+        "优先继续进行中和逾期任务，再结合优先级、最近截止日、WIP 与当日容量，给出最多 3 条可排今天的任务",
+        "对未选任务说明 WIP 已满、容量不足、依赖阻塞、低优先级或状态待确认等理由，不臆造依赖或剩余工时"
+      ]
+    },
+    {
+      "id": "daily-brief-degrades-when-optional-data-missing",
+      "input": "帮我出今天日报；当前 MCP 只有 get_stories_or_tasks，没有 get_bug、get_comments、get_timesheets。",
+      "expected": [
+        "必须用 tasks 生成简短日报",
+        "不得臆造 Bug、评论或工时",
+        "在数据区用短句标明缺失：Bug、评论、工时"
+      ]
+    },
+    {
+      "id": "finish-does-not-auto-transition-status",
+      "input": "这个需求做完了，帮我收尾，给出提交信息并登记今天 3 小时工时。",
+      "expected": [
+        "先执行本地测试和 Story/Task 验收复核",
+        "有 get_commit_msg 时生成 TAPD 提交关键字，工时写入先 dry-run 并查重",
+        "不得自动提交 .tapd 文件或流转 TAPD 状态"
+      ]
+    },
+    {
+      "id": "backend-profile-uses-team-prefix",
+      "input": "/tapd profile=backend，帮我基于这个 Story 拆后端任务、排期并回填 TAPD。",
+      "expected": [
+        "必须读取 team-policy 并解析 backend profile",
+        "优先使用 .tapd/team.json 中 backend 的任务前缀，缺失时使用【后端】",
+        "不得把任务硬编码为【前端】",
+        "默认展示估时排期 dry-run 并确认后写回"
+      ]
+    },
+    {
+      "id": "lead-team-update-requires-explicit-scope-and-second-confirmation",
+      "input": "我是负责人，把张三和李四这两个任务的 due 调到本周五。",
+      "expected": [
+        "不得仅根据负责人自然语言提升权限",
+        "必须确认当前 profile=lead、team policy 对 lead 配置 explicit-team，且允许 update-explicit-team-task",
+        "必须按 owner token 精确匹配张三和李四并逐条展示旧值到新值",
+        "团队范围写入即使用户说直接处理也必须二次确认并在写后回读"
+      ]
+    },
+    {
+      "id": "team-iteration-review-is-readonly",
+      "input": "/tapd 看下当前迭代团队负载、逾期和阻塞风险。",
+      "expected": [
+        "必须明确进入团队迭代盘点而不是个人今日待办",
+        "读取当前迭代全部 open/progressing tasks 并按 owner token 分组",
+        "输出成员 WIP、逾期、无人负责和有证据的阻塞项",
+        "不得自动修改 owner、排期、工时或状态，也不得把长期未修改臆断为阻塞"
+      ]
+    },
+    {
+      "id": "product-flow-initializes-without-handwritten-json",
+      "input": "/tapd 初始化当前产品仓库的 Flow 需求。产品文档是 docs/requirement.md，原型在 prototype/，workspace_id=12345678。",
+      "expected": [
+        "必须读取已提交的产品文档和原型，生成 title、spec_id、in/out scope 和 AC 草案并展示确认",
+        "确认后必须调用 bundled tapd-context spec init，不要求产品经理手写 .flow/spec.json",
+        "必须再调用 tapd-context spec validate；manifest_valid=true 后仍需通过 Provider 能力、权限和只读连通门禁才能发布",
+        "文档或原型未提交、路径越界、origin 缺失或 ref 非精确 commit 时必须阻断"
+      ]
+    },
+    {
+      "id": "spec-publish-first-create-and-backfill",
+      "input": "/tapd 从当前产品仓库发布需求；.flow/spec.json 已提交但还没有 external_id。",
+      "expected": [
+        "必须校验 Manifest、仓库内路径、验收点 ID 唯一性，并把 source.ref 解析为精确 commit",
+        "必须先按稳定标题和同 spec_id 受管标记查询已有 Story；唯一匹配时恢复映射，多条匹配时停止选择",
+        "必须读取该 commit 对应的产品文档和原型，展示 TAPD Story dry-run 后才创建",
+        "创建后必须回读 Story，并把 provider、space_id、external_id、url、published_ref 回填到 Manifest",
+        "不得自动提交产品仓库，必须提示用户提交 Manifest 映射变更"
+      ]
+    },
+    {
+      "id": "spec-publish-idempotent-same-ref",
+      "input": "/tapd 再发布一次当前产品需求；Manifest 的 published_ref 已等于当前精确 commit。",
+      "expected": [
+        "必须以 spec_id、provider、space_id 识别同一远端需求",
+        "必须回读并比较受管区块；published_ref 与当前 commit 相同且区块内容一致时才幂等跳过远端更新",
+        "不得重复创建 Story、刷新描述或发布重复评论"
+      ]
+    },
+    {
+      "id": "spec-publish-update-preserves-manual-content",
+      "input": "/tapd 发布产品文档的新版本；TAPD Story 已绑定，描述中 Flow 区块外还有人工补充内容。",
+      "expected": [
+        "必须先回读远端完整描述并校验 Manifest 中的 Provider、space 和 external_id",
+        "只能替换匹配 spec_id 的 FLOW-SPEC 受管区块，区块外人工内容必须保留",
+        "若远端描述没有受管标记，必须展示采用为受管需求的 dry-run 并等待确认",
+        "更新后必须回读并回填新的 published_ref"
+      ]
+    },
+    {
+      "id": "product-review-human-gate-freezes-ref",
+      "input": "/tapd 准备产品评审，通过后帮我记录结论。",
+      "expected": [
+        "必须基于精确规格 commit 生成目标、范围、验收点、差异、任务、依赖和待决问题评审包",
+        "没有专职测试时必须明确质量负责人候选，不得省略质量视角",
+        "AI 不得自行判定 approved，必须由用户明确确认评审结论",
+        "确认后记录 reviewed_ref、review.status 和 decided_at，并刷新 Requirement 受管区块；评论和描述更新仍遵守 dry-run 与写入权限"
+      ]
+    },
+    {
+      "id": "post-review-spec-change-requires-incremental-review",
+      "input": "/tapd 继续开发；Manifest 是 approved，但 source.ref 已经和 reviewed_ref 不同。",
+      "expected": [
+        "必须识别评审后规格变化并展示两个版本之间的差异",
+        "不得把新 source.ref 静默视为已评审版本，也不得在其上继续受 Gate 约束的开发",
+        "只允许对受影响范围发起增量复审；确认后更新 reviewed_ref"
+      ]
+    },
+    {
+      "id": "approved-flow-spec-is-development-truth",
+      "input": "/tapd 开始开发；TAPD Story 已绑定产品 Manifest，review.status=approved 且 source.ref=reviewed_ref。",
+      "expected": [
+        "必须从产品 Git Repo 的精确 reviewed_ref 读取文档和原型作为完整需求事实源",
+        "必须保留 Manifest 中的 AC ID，并用它们关联开发任务和后续测试",
+        "TAPD Story、评论和任务只能作为执行与协作上下文，不得覆盖已评审规格"
+      ]
+    },
+    {
+      "id": "provider-contract-blocks-unsupported-write",
+      "input": "/tapd 把这个 Flow Manifest 发布到 provider=feishu；当前只安装了 TAPD Provider。",
+      "expected": [
+        "必须保持 Requirement、Task、Defect、TestCase、Comment 的通用 Flow 语义",
+        "必须按 Provider contract 探测 feishu Adapter 能力，不得调用 TAPD 工具伪装为飞书发布",
+        "Adapter 未实现时只输出通用发布草案并停止远端写入"
+      ]
+    }
+  ],
+  "skill_name": "workbridge"
+}

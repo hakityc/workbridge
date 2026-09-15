@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "id": "discourse",
+  "node": 24,
+  "command": "npx",
+  "args": [
+    "-y",
+    "@discourse/mcp@0.3.1"
+  ],
+  "probe": {
+    "tool": "discourse_search",
+    "args": {
+      "query": "order:latest",
+      "max_results": 1
+    }
+  },
+  "capabilities": {
+    "discussion.search": {
+      "version": 1,
+      "tools": [
+        "discourse_search"
+      ],
+      "write": false
+    },
+    "discussion.topic.read": {
+      "version": 1,
+      "tools": [
+        "discourse_read_topic"
+      ],
+      "write": false
+    },
+    "discussion.post.read": {
+      "version": 1,
+      "tools": [
+        "discourse_read_post"
+      ],
+      "write": false
+    },
+    "discussion.topic.create": {
+      "version": 1,
+      "tools": [
+        "discourse_create_topic"
+      ],
+      "write": true,
+      "readback": "discussion.post.read"
+    },
+    "discussion.post.create": {
+      "version": 1,
+      "tools": [
+        "discourse_create_post"
+      ],
+      "write": true,
+      "readback": "discussion.post.read"
+    },
+    "discussion.post.update": {
+      "version": 1,
+      "tools": [
+        "discourse_update_post"
+      ],
+      "write": true,
+      "readback": "discussion.post.read"
+    }
+  }
+}

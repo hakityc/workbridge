@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest import mock
 
 
-SCRIPT = Path(__file__).parents[1] / "tapd" / "scripts" / "get_current_user.py"
+SCRIPT = Path(__file__).parents[1] / "workbridge" / "scripts" / "get_current_user.py"
 SPEC = importlib.util.spec_from_file_location("get_current_user", SCRIPT)
 MODULE = importlib.util.module_from_spec(SPEC)
 assert SPEC and SPEC.loader
