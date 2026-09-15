@@ -14,7 +14,7 @@
     },
     {
       "id": "draft-only",
-      "request": "把 WiseFlow 讨论整理成需求草案，不要发布",
+      "request": "把 Discourse 讨论整理成需求草案，不要发布",
       "environment": "Discourse reads available, TAPD absent",
       "expect": [
         "read source",

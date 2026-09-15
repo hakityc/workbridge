@@ -1,6 +1,6 @@
-# Discourse Connector / WiseFlow connection
+# Discourse Connector
 
-来源：https://github.com/discourse/discourse-mcp 。实际读取 @discourse/mcp@0.3.1 发布包核对工具名。固定版本 0.3.1，本地要求 Node >=24；官方 generator 负责 device/legacy 用户授权。WiseFlow 是站点连接名，不是新的 Provider。
+来源：https://github.com/discourse/discourse-mcp 。实际读取 @discourse/mcp@0.3.1 发布包核对工具名。固定版本 0.3.1，本地要求 Node >=24；官方 generator 负责 device/legacy 用户授权。连接名称使用 discourse，不创建新的 Provider。
 
 | 能力 | MCP 工具 | 关键参数/回读 |
 |---|---|---|

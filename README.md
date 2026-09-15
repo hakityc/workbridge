@@ -1,11 +1,11 @@
 # WorkBridge
 
-跨 TAPD 与 Discourse/WiseFlow 的业务编排 skill，附带安全连接 CLI。Agent 负责业务流程，CLI 负责凭据输入、宿主配置、MCP 探测和本地恢复；不运行额外的业务网关。
+跨 TAPD 与 Discourse 的业务编排 skill，附带安全连接 CLI。Agent 负责业务流程，CLI 负责凭据输入、宿主配置、MCP 探测和本地恢复；不运行额外的业务网关。
 
 ## 支持什么
 
 - TAPD 需求、任务、缺陷、评论、用例、排期，以及既有研发交付流程。
-- WiseFlow/Discourse 讨论搜索、阅读、创建、回复与编辑。
+- Discourse 讨论搜索、阅读、创建、回复与编辑。
 - 讨论转需求、进展发布；只有明确授权才创建资源或发送内容。
 - 本地 stdio / 远程 Streamable HTTP，通过稳定连接名保持资源引用。
 - macOS/Linux 的 Codex、Claude Code、Cursor 配置适配。真实宿主验证范围见验收表。
@@ -27,16 +27,16 @@ ln -s "$PWD/workbridge" ~/.agents/skills/workbridge
 
 ## 首次使用
 
-直接告诉 Agent “帮我创建需求”或“整理这个 WiseFlow 讨论”。已有宿主 MCP 会直接复用；缺失时 Agent 保留草案并只引导当前必需连接。普通需求无需 Git 仓库。
+直接告诉 Agent “帮我创建需求”或“整理这个 Discourse 讨论”。已有宿主 MCP 会直接复用；缺失时 Agent 保留草案并只引导当前必需连接。普通需求无需 Git 仓库。
 
 需要首次连接时，在**自己的终端**执行以下命令；不要把 token 发到聊天：
 
 ```sh
 node "$PWD/workbridge/scripts/dist/cli.js" connect tapd --host codex --connection tapd-work
-node "$PWD/workbridge/scripts/dist/cli.js" connect discourse --host codex --connection wiseflow --site https://forum.example.com
+node "$PWD/workbridge/scripts/dist/cli.js" connect discourse --host codex --connection discourse --site https://forum.example.com
 ```
 
-将站点替换为实际 WiseFlow 地址，host 可选 codex/claude/cursor。Agent 给出的命令必须展开成实际绝对路径。
+将站点替换为实际 Discourse 站点地址，host 可选 codex/claude/cursor。Agent 给出的命令必须展开成实际绝对路径。
 
 TAPD 的[个人访问令牌入口](https://www.tapd.cn/personal_settings/index?tab=personal_token)只显示一次新 token。CLI 隐藏输入、MCP 只读验证后保存；不把凭据展开进命令参数或宿主配置。
 

@@ -394,7 +394,7 @@ async function main() {
                 String(await interact({
                     version: 1,
                     type: "input",
-                    prompt: "WiseFlow 站点 HTTPS URL",
+                    prompt: "Discourse 站点 HTTPS URL",
                     connection,
                 })));
             await about(site);

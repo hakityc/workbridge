@@ -13,9 +13,9 @@
 ```text
 node <skill>/scripts/dist/cli.js doctor --host codex --connection tapd-work
 node <skill>/scripts/dist/cli.js connect tapd --host codex --connection tapd-work
-node <skill>/scripts/dist/cli.js connect discourse --host codex --connection wiseflow --site https://forum.example.com
-node <skill>/scripts/dist/cli.js connect discourse --host codex --connection wiseflow --allow-writes
-node <skill>/scripts/dist/cli.js connection verify wiseflow
+node <skill>/scripts/dist/cli.js connect discourse --host codex --connection discourse --site https://forum.example.com
+node <skill>/scripts/dist/cli.js connect discourse --host codex --connection discourse --allow-writes
+node <skill>/scripts/dist/cli.js connection verify discourse
 ```
 
 host 支持 codex/claude/cursor。连接名是逻辑名称，注册服务为 workbridge-<name>。`--yes` 只表示已授权配置变更，不绕过隐藏输入、不授权业务写入。
