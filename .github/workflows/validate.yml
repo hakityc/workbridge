@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: "18"
           cache: npm
-          cache-dependency-path: tapd/scripts/tapd-context/package-lock.json
+          cache-dependency-path: workbridge/scripts/tapd-context/package-lock.json
 
       - uses: actions/setup-python@v6
         with:
@@ -27,11 +27,11 @@ jobs:
 
       - name: Install CLI development dependencies
         run: npm ci
-        working-directory: tapd/scripts/tapd-context
+        working-directory: workbridge/scripts/tapd-context
 
       - name: Test bundled CLI
         run: npm test
-        working-directory: tapd/scripts/tapd-context
+        working-directory: workbridge/scripts/tapd-context
 
       - name: Validate skill package
-        run: python3 tapd/scripts/quick_validate.py tapd
+        run: python3 workbridge/scripts/quick_validate.py workbridge

@@ -12,7 +12,7 @@
 | 新 Node 契约与集成测试 | 14/14 通过 | `workbridge/scripts/test/core.test.mjs` |
 | Python 安全与终端测试，Node 22 | 18 通过，2 跳过 | 共 20 个；两项 Discourse 要求 Node 24 |
 | 临时 Node 24 终端补测 | 9/9 通过 | `tests/test_workbridge_terminal.py`；覆盖前述两项跳过，假论坛/假宿主 |
-| 官方 skill 格式校验 | 两入口通过 | workbridge 与 tapd；使用隔离 PyYAML，不改项目依赖 |
+| 官方 skill 格式校验 | WorkBridge 入口通过 | 使用隔离 PyYAML，不改项目依赖 |
 | 独立 Agent 前测 | 已执行、问题已修复 | 三个业务场景静态前测，以及连接失败恢复的代码前测；不是完整真实 Agent 业务 E2E |
 | 当前宿主真实 TAPD 读取 | 成功 | get_user_participant_projects 返回 status=1，未记录项目名称、token 或正文 |
 | 真实业务写入 | 未执行 | 未指定测试项目/主题，未创建需求、帖子、评论或其他业务资源 |

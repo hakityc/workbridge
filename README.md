@@ -21,7 +21,7 @@ mkdir -p ~/.agents/skills
 ln -s "$PWD/workbridge" ~/.agents/skills/workbridge
 ```
 
-如果链接已存在，先检查是否指向本仓库，不能覆盖未知安装。需要旧 `/tapd` 入口时另外安装 `tapd` 文件夹，并确保其相邻位置存在 `workbridge`。已有 tapd 安装的链接不要重复创建。
+如果链接已存在，先检查是否指向本仓库，不能覆盖未知安装。
 
 运行需要 Node >=22；本地 Discourse 另需 Node >=24。TAPD 需要 uv/uvx 与 Python >=3.13；CLI 在获取凭据前检查前置环境。依赖和服务版本固定，不自动升级已有 MCP。
 
@@ -69,7 +69,7 @@ node "$PWD/workbridge/scripts/dist/cli.js" disconnect tapd-work
 - [安全交互与首次连接](workbridge/references/core/onboarding.md)
 - [公共执行契约](workbridge/references/core/execution.md)
 - [场景验收记录](docs/workbridge-validation.md)
-- [历史 TAPD 指南](docs/tapd-legacy-guide.md)
+- [TAPD 参考指南](docs/tapd-legacy-guide.md)
 
 完整验证：
 

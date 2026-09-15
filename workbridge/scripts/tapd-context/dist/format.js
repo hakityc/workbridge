@@ -161,7 +161,7 @@ stale_policy: do-not-use-if-current-branch-mismatch
 # TAPD Active Context
 
 > If this file is stale or its branch does not match the current Git branch, do not use it.
-> Run \`tapd-context sync --current-branch\` or ask the user to run \`/tapd 继续\`.
+> Run \`tapd-context sync --current-branch\` or ask the user to run \`/workbridge 继续\`.
 
 ## Identity
 

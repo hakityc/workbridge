@@ -599,7 +599,7 @@ function spec(repoRoot: string, args: ParsedArgs): void {
       next_steps: [
         "检查 .flow/spec.json 并提交到产品仓库",
         "执行 tapd-context spec validate",
-        "在 Agent 中说：/tapd 从当前产品仓库发布需求",
+        "在 Agent 中说：/workbridge 从当前产品仓库发布需求",
       ],
     });
     return;

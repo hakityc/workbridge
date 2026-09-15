@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained validation for the TAPD skill."""
+"""Self-contained validation for the WorkBridge skill."""
 
 from __future__ import annotations
 

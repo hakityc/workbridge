@@ -6,7 +6,7 @@
 
 An AI delivery workflow for teams. It uses a product Git repository as the specification source of truth and TAPD as the first collaboration provider, connecting requirement publishing, product review, development, quality validation, and delivery traceability. Future providers such as Feishu can reuse the same workflow.
 
-[![skills.sh](https://skills.sh/b/hakityc/tapd-skill)](https://skills.sh/hakityc/tapd-skill/tapd)
+[![skills.sh](https://skills.sh/b/hakityc/workbridge)](https://skills.sh/hakityc/workbridge/workbridge)
 
 <!-- README-I18N:START -->
 
@@ -48,24 +48,24 @@ This solves the most common AI coding problem: context resets between sessions.
 
 | Scenario | Say | What the skill does |
 |---|---|---|
-| Publish requirement | `/tapd publish from this product repository` | Validates the Manifest, idempotently creates/updates a TAPD Story, and backfills its mapping |
-| Initialize product flow | `/tapd initialize Flow for this product repository` | Drafts scope and acceptance from committed docs/prototypes, then generates and validates `.flow/spec.json` |
-| Product review | `/tapd prepare product review` | Builds the review package and freezes the human-approved specification version |
-| Start a Story | `/tapd start <Story link>` | Creates a branch, binds TAPD, reads the requirement |
-| Start a Task | `/tapd start <Task link>` | Reads the Task and resolves its parent Story |
-| Fix a Bug | `/tapd fix <Bug link>` | Reads reproduction, impact, comments, and regression scope |
-| Pre-dev review | `/tapd review product docs and prototype differences first` | Finds rework/blocker/acceptance issues, then writes confirmed items to TAPD comments |
-| Continue work | `/tapd continue` | Restores context from the current Git branch |
-| Split tasks | `/tapd create a branch, split tasks, and write back to TAPD` | Creates profile-based tasks, then confirms before filling effort/begin/due |
-| Wrap up | `/tapd wrap up` | Checks changes, runs validation, drafts comments and timesheets |
-| Standup | `/tapd standup brief` | Summarizes done, in progress, risks, and next work |
-| Today plan | `/tapd what should I work on today` | Ranks unfinished tasks in the current iteration into a practical today plan |
-| Team review | `/tapd review team load and risks for the current iteration` | Read-only summary of WIP, overdue, blocked, and unowned tasks |
+| Publish requirement | `/workbridge publish from this product repository` | Validates the Manifest, idempotently creates/updates a TAPD Story, and backfills its mapping |
+| Initialize product flow | `/workbridge initialize Flow for this product repository` | Drafts scope and acceptance from committed docs/prototypes, then generates and validates `.flow/spec.json` |
+| Product review | `/workbridge prepare product review` | Builds the review package and freezes the human-approved specification version |
+| Start a Story | `/workbridge start <Story link>` | Creates a branch, binds TAPD, reads the requirement |
+| Start a Task | `/workbridge start <Task link>` | Reads the Task and resolves its parent Story |
+| Fix a Bug | `/workbridge fix <Bug link>` | Reads reproduction, impact, comments, and regression scope |
+| Pre-dev review | `/workbridge review product docs and prototype differences first` | Finds rework/blocker/acceptance issues, then writes confirmed items to TAPD comments |
+| Continue work | `/workbridge continue` | Restores context from the current Git branch |
+| Split tasks | `/workbridge create a branch, split tasks, and write back to TAPD` | Creates profile-based tasks, then confirms before filling effort/begin/due |
+| Wrap up | `/workbridge wrap up` | Checks changes, runs validation, drafts comments and timesheets |
+| Standup | `/workbridge standup brief` | Summarizes done, in progress, risks, and next work |
+| Today plan | `/workbridge what should I work on today` | Ranks unfinished tasks in the current iteration into a practical today plan |
+| Team review | `/workbridge review team load and risks for the current iteration` | Read-only summary of WIP, overdue, blocked, and unowned tasks |
 
 ## Install
 
 ```bash
-npx skills add hakityc/tapd-skill --skill tapd --global --yes
+npx skills add hakityc/workbridge --skill workbridge --global --yes
 ```
 
 The Skills CLI auto-detects the current agent. To target a specific agent, add `--agent <agent-name>`.
@@ -73,12 +73,12 @@ The Skills CLI auto-detects the current agent. To target a specific agent, add `
 ## Update
 
 ```bash
-npx skills update tapd --global --yes
+npx skills update workbridge --global --yes
 ```
 
 ## Minimal Setup
 
-This skill does not bundle a TAPD MCP server. The skill orchestrates the workflow; the MCP server owns TAPD access and token handling.
+WorkBridge does not bundle a TAPD MCP server. The skill orchestrates the workflow; the MCP server owns TAPD access and token handling.
 
 Members do not need to learn `setup`, `doctor`, or `init` commands first: they can simply say “create a requirement” or “start this work item.” The skill diagnoses prerequisites automatically and asks only for the missing step. Each member must still complete a one-time secure TAPD authorization; the skill never stores tokens or asks users to paste one into chat, documentation, or Git.
 
@@ -96,7 +96,7 @@ When you express a TAPD business intent in a repository for the first time, the 
 
 For team rollout, copy `tapd/examples/team.example.json` to `.tapd/team.json` in the business repository and commit it. It defines shared profile prefixes, update scopes, effort parameters, and writeback policy. Personal identity and overrides remain in the untracked `.tapd/config.json`. Precedence is: current request > personal config > team policy > safe defaults.
 
-In the product repository, commit the product document and prototype. If `.flow/spec.json` is missing, product users can ask the agent to create a requirement from the current document; it drafts scope and acceptance points, then generates and validates the Manifest after confirmation. Product users never need to hand-write JSON; [`tapd/examples/spec-manifest.example.json`](tapd/examples/spec-manifest.example.json) is reference-only. The contract is defined in [`../workbridge/scripts/tapd-context/schemas/spec-manifest.schema.json`](../workbridge/scripts/tapd-context/schemas/spec-manifest.schema.json).
+In the product repository, commit the product document and prototype. If `.flow/spec.json` is missing, product users can ask the agent to create a requirement from the current document; it drafts scope and acceptance points, then generates and validates the Manifest after confirmation. Product users never need to hand-write JSON; [`workbridge/examples/spec-manifest.example.json`](../workbridge/examples/spec-manifest.example.json) is reference-only. The contract is defined in [`../workbridge/scripts/tapd-context/schemas/spec-manifest.schema.json`](../workbridge/scripts/tapd-context/schemas/spec-manifest.schema.json).
 
 The generated local config looks like this:
 
@@ -111,10 +111,10 @@ The generated local config looks like this:
 ## Common Usage
 
 ```text
-/tapd 开始做 https://www.tapd.cn/12345678/prong/stories/view/1112345678000000001
-/tapd 继续开发
-/tapd 这个需求做完了，帮我收尾
-/tapd 生成今天的站会简报，workspace_id=12345678，当前用户=开发者A
+/workbridge 开始做 https://www.tapd.cn/12345678/prong/stories/view/1112345678000000001
+/workbridge 继续开发
+/workbridge 这个需求做完了，帮我收尾
+/workbridge 生成今天的站会简报，workspace_id=12345678，当前用户=开发者A
 ```
 
 Supported common link forms:
@@ -156,7 +156,7 @@ The CLI never edits `.gitignore` automatically.
 
 Do not add `.tapd/team.json` to `.gitignore`; it must not contain tokens or personal nicknames.
 
-For painless handoff, keep the default branch naming protocol such as `feat/tapd-story-1112345678000000001-action-item`. A teammate can check out that branch and run `/tapd continue`; the skill can recover the TAPD identity from the branch name and then refresh details through MCP.
+For painless handoff, keep the default branch naming protocol such as `feat/tapd-story-1112345678000000001-action-item`. A teammate can check out that branch and run `/workbridge continue`; the skill can recover the TAPD identity from the branch name and then refresh details through MCP.
 
 ## Safety Boundaries
 

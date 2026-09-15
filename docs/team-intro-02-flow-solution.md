@@ -48,7 +48,7 @@ flowchart LR
 产品仓库提交 `.flow/spec.json` 后，产品经理可以直接说：
 
 ```text
-/tapd 从当前产品仓库发布需求
+/workbridge 从当前产品仓库发布需求
 ```
 
 工具会读取指定 commit 的产品文档和原型，生成 TAPD Requirement 摘要，并回填远端链接。产品 Git Repo 保存完整规格，TAPD 保存适合协作和执行的摘要。
@@ -82,7 +82,7 @@ flowchart LR
 产品经理可以说：
 
 ```text
-/tapd 准备产品评审
+/workbridge 准备产品评审
 ```
 
 工具会生成评审输入包，包括：
