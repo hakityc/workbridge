@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.0-rc.1 - 2026-09-15
+
+- First WorkBridge release candidate under the renamed repository and skill identity.
+- Retire the former TAPD skill entry and publish only the `workbridge` skill.
+
+The entries below describe the pre-WorkBridge TAPD implementation history.
+
 ## Unreleased
 
 - Package the complete skill under `tapd/` so standard Skills CLI installs include references, schemas, and the bundled CLI.

@@ -33,7 +33,7 @@ function failureCode(e: unknown): string {
   return "PROBE_FAILED";
 }
 export async function probe(input: ProbeInput): Promise<ProbeResult> {
-  const client = new Client({ name: "workbridge-probe", version: "1.0.0" });
+  const client = new Client({ name: "workbridge-probe", version: "0.1.0-rc.1" });
   const transport = input.url
     ? new StreamableHTTPClientTransport(new URL(input.url), {
         requestInit: { headers: input.headers },
