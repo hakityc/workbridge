@@ -1,6 +1,6 @@
 # WorkBridge
 
-跨 TAPD 与 Discourse 的业务编排 skill，附带安全连接 CLI。Agent 负责业务流程，CLI 负责凭据输入、宿主配置、MCP 探测和本地恢复；不运行额外的业务网关。
+WorkBridge 是跨平台业务编排 skill，附带安全连接 CLI。Agent 负责业务流程，CLI 负责凭据输入、宿主配置、MCP 探测和本地恢复；不运行额外的业务网关。
 
 ## 支持什么
 

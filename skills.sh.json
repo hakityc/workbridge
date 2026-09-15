@@ -3,7 +3,7 @@
   "groupings": [
     {
       "title": "WorkBridge",
-      "description": "TAPD and Discourse business workflows with secure onboarding.",
+      "description": "Cross-platform WorkBridge business workflows with secure onboarding.",
       "skills": ["workbridge"]
     }
   ]
