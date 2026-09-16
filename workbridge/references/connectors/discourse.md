@@ -1,6 +1,6 @@
 # Discourse Connector
 
-来源：https://github.com/discourse/discourse-mcp 。实际读取 @discourse/mcp@0.3.1 发布包核对工具名。固定版本 0.3.1，本地要求 Node >=24；官方 generator 负责 device/legacy 用户授权。连接名称使用 discourse，不创建新的 Provider。
+来源：https://github.com/discourse/discourse-mcp 。实际读取 `@discourse/mcp@0.3.1` 的运行时 schema 核对工具名。固定版本 0.3.1，本地要求 Node >=24；官方 generator 负责 device/legacy 用户授权。连接名称使用 discourse，不创建新的 Provider。
 
 | 能力 | MCP 工具 | 关键参数/回读 |
 |---|---|---|
@@ -15,6 +15,15 @@ raw 最长 30000 字符，限制以运行时 schema 为准。topic_id 与 post_i
 
 公开搜索成功不证明私人内容访问权限。业务对象应按用户授权读取；写入工具存在也不证明目标可写。User API Key 不支持冒充其他作者，默认不传 author_username。
 
-默认只读；--allow-writes 是服务能力开关，不代表 Agent 可以自行发帖。403 保留草案；429 遵守等待；404 不一概断言“未安装插件”。默认使用 discourse_api_only 避免依赖 Discourse AI 工具。
+默认只读；`--allow_writes` 是服务能力开关，不代表 Agent 可以自行发帖。403 保留草案；429 遵守等待；404 不一概断言“未安装插件”。默认使用 `discourse_api_only`，避免把站点 AI 远程工具误当作已验证的论坛能力。
+
+## 场景路由
+
+先读 `../discourse/capability-matrix.md`：它把官方 toolset 映射到用户目标和最小前置条件。随后只读对应规则：
+
+- 搜索、读帖、归纳、发主题/回复/编辑、私信、草稿、附件、支持分流：`../discourse/discussion-orchestrator.md`。
+- 社区运营、群组、标签、审核、数据分析、站点/主题/Webhook、工作流与 AI 管理：`../discourse/operator-safety.md`。
+
+toolset 决定“工具是否出现”，不授予论坛权限；`--toolsets all` 仅在操作者明确要求完整目录、且当前任务确实需要时使用。`--allow_writes` 只用于已明确的写入范围；不为探测或方便而打开。官方 0.3.1 中 `--read_only=false` 已废弃，不写入新命令或 profile。
 
 既有 profile 可用 --profile 引用；必须在仓库外、无符号链接、权限 0600。官方 generator 输出留在用户终端，profile 不回传给 Agent。

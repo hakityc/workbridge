@@ -13,12 +13,12 @@ CLI 需要 Node.js 22+；本地 Discourse 需要 Node.js 24+。MCP 业务调用�
 
 - 首次使用、连接缺失、认证失败：`references/core/onboarding.md`。保留原请求，只询问缺失的一步。不先要求 Git 初始化。
 - 读取、创建、修改需求/任务/缺陷：`references/workflows/workitems.md`。
-- 阅读、整理、创建、回复、编辑讨论：`references/workflows/discussion.md`。
+- 阅读、整理、创建、回复、编辑讨论：`references/workflows/discussion.md`，再按目标加载 `references/discourse/` 下的场景规则。
 - 讨论转需求、进展发布：`references/workflows/cross-platform.md`。
 - 产品规格、评审、开发、测试、收尾、日报：`references/workflows/delivery.md`。
 - 分支绑定与旧数据迁移：`references/core/context.md`；只有开发绑定需要 Git。
 
-按目标加载一个连接器：TAPD → `references/connectors/tapd.md`；Discourse → `references/connectors/discourse.md`。不要一次加载所有工具 Schema 或所有平台指导。
+按目标加载一个连接器：TAPD → `references/connectors/tapd.md`；Discourse → `references/connectors/discourse.md`。不要一次加载所有工具 Schema 或所有平台指导；Discourse 的全场景覆盖由能力矩阵按需展开，不等于默认启用全部高权限 toolset。
 
 已有可用宿主 MCP 直接复用，不要求托管到 WorkBridge。没有匹配工具时先诊断，不绕过 MCP 请求业务 API。工具发现不证明业务语义或写权限。
 
